@@ -214,4 +214,27 @@ router.post("/update-status", async (req, res) => {
   }
 
 });
+
+router.delete("/delete/:id", async (req, res) => {
+
+  try {
+
+    await Property.findByIdAndDelete(req.params.id);
+
+    res.json({
+      success: true,
+      message: "Product Deleted"
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error"
+    });
+
+  }
+
+});
+
 module.exports = router;
