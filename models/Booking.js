@@ -7,6 +7,11 @@ const BookingSchema = new mongoose.Schema({
     required: true
   },
 
+  ownerEmail: {
+  type: String,
+  required: true
+},
+
   productId: {
     type: String,
     required: true

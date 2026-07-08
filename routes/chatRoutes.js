@@ -1,17 +1,63 @@
 const express = require("express");
 const router = express.Router();
-
+const Booking = require("../models/Booking");
 const Chat = require("../models/Chat");
 const User = require("../models/User");
 
-// GET USERS (IMPORTANT — this is missing in your old code)
-router.get("/users", async (req, res) => {
+router.get("/users/:email", async (req, res) => {
+
   try {
-    const users = await User.find({}, "email");
-    res.json({ users });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+
+    const email = req.params.email;
+
+    const bookings = await Booking.find({
+      $or: [
+        { userEmail: email },
+        { ownerEmail: email }
+      ]
+    });
+
+    let users = [];
+
+    bookings.forEach(b => {
+
+      if (b.userEmail !== email) {
+
+        users.push({
+          email: b.userEmail
+        });
+
+      }
+
+      if (b.ownerEmail !== email) {
+
+        users.push({
+          email: b.ownerEmail
+        });
+
+      }
+
+    });
+
+    users = users.filter(
+      (v, i, a) =>
+        a.findIndex(t => t.email === v.email) === i
+    );
+
+    res.json({
+      users
+    });
+
   }
+
+  catch (err) {
+
+    res.status(500).json({
+      message: err.message
+    });
+
+  }
+
 });
 
 // SEND MESSAGE
