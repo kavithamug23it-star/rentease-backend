@@ -192,14 +192,23 @@ router.post("/update-status", async (req, res) => {
 
     console.log("Product:", productId);
     console.log("Status:", status);
+console.log("Booking Product ID:", req.body.productId);
 
-    const updated = await Property.findByIdAndUpdate(
-      productId,
-      { status },
-      { new: true }
-    );
+const product = await Property.findById(req.body.productId);
 
-    console.log("Updated Product:", updated);
+console.log("Found Product:", product);
+
+if (!product) {
+  return res.status(404).json({
+    success: false,
+    message: "Product Not Found"
+  });
+}
+
+product.status = "rented";
+await product.save();
+
+console.log("After Update:", product);
 
     res.json({
       success: true,

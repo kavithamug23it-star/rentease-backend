@@ -9,17 +9,23 @@ router.post("/add", async (req, res) => {
 
   try {
 
+    console.log("========== BOOKING REQUEST ==========");
+    console.log(req.body);
+
     const booking = new Booking(req.body);
 
     await booking.save();
 
-    const updatedProduct = await Property.findByIdAndUpdate(
-  req.body.productId,
-  { status: "rented" },
-  { new: true }
-);
+    console.log("========== BOOKING SAVED ==========");
+    console.log(booking);
 
-console.log("Updated Product:", updatedProduct);
+    const updatedProduct = await Property.findByIdAndUpdate(
+      req.body.productId,
+      { status: "rented" },
+      { new: true }
+    );
+
+    console.log("Updated Product:", updatedProduct);
 
     res.json({
       success: true,
