@@ -101,33 +101,49 @@ const chat = await Chat.create({
 }
 });
 
-// DELETE CHAT
+// DELETE PRODUCT CHAT
 
-router.delete("/:id", async(req,res)=>{
+router.delete("/delete/:user1/:user2/:productId", async (req, res) => {
 
-try{
+  try {
 
-const chat = await Chat.findByIdAndUpdate(
- req.params.id,
- {
-   isDeleted:true
- }
-);
-
-res.json({
- success:true,
- message:"Chat deleted"
-});
+    const {
+      user1,
+      user2,
+      productId
+    } = req.params;
 
 
-}catch(err){
+    await Chat.deleteMany({
+      productId: productId,
 
-res.status(500).json({
- success:false,
- message:err.message
-});
+      $or: [
+        {
+          sender: user1,
+          receiver: user2
+        },
+        {
+          sender: user2,
+          receiver: user1
+        }
+      ]
+    });
 
-}
+
+    res.json({
+      success: true,
+      message: "Product chat deleted"
+    });
+
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+
+  }
 
 });
 // GET CHAT
@@ -142,9 +158,6 @@ router.get("/:u1/:u2", async (req, res) => {
    {sender:u1,receiver:u2},
    {sender:u2,receiver:u1}
   ]
- },
- {
-  isDeleted:false
  }
  ]
 }).sort({ createdAt: 1 });
