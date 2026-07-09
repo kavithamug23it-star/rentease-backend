@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const ChatSchema = new mongoose.Schema({
   sender: String,
   receiver: String,
+
+  productId: String,
+  productName: String,
+  productImage: String,
+
   message: String,
+
   createdAt: {
     type: Date,
     default: Date.now

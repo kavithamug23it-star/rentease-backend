@@ -63,13 +63,25 @@ router.get("/users/:email", async (req, res) => {
 // SEND MESSAGE
 router.post("/send", async (req, res) => {
   try {
-    const { sender, receiver, message } = req.body;
+    const {
+  sender,
+  receiver,
+  message,
+  productId,
+  productName,
+  productImage
+} = req.body;
+   
+const chat = await Chat.create({
+  sender,
+  receiver,
 
-    const chat = await Chat.create({
-      sender,
-      receiver,
-      message
-    });
+  productId,
+  productName,
+  productImage,
+
+  message
+});
 
     res.json({ success: true, chat });
   } catch (err) {
