@@ -10,6 +10,10 @@ const ChatSchema = new mongoose.Schema({
 
   message: String,
 
+  isArchived:{
+ type:Boolean,
+ default:false
+},
   createdAt: {
     type: Date,
     default: Date.now

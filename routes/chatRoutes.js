@@ -26,6 +26,7 @@ router.get("/users/:email", async (req, res) => {
        users.push({
     email: b.userEmail,
     productName: b.productName,
+    productId: b.productId,
     image: b.image,
     status: b.status
 });
@@ -37,6 +38,7 @@ router.get("/users/:email", async (req, res) => {
      users.push({
     email: b.ownerEmail,
     productName: b.productName,
+    productId: b.productId,
     image: b.image,
     status: b.status
 });
@@ -149,23 +151,97 @@ router.delete("/delete/:user1/:user2/:productId", async (req, res) => {
 // GET CHAT
 router.get("/:u1/:u2", async (req, res) => {
   try {
+
     const { u1, u2 } = req.params;
 
     const messages = await Chat.find({
- $and:[
- {
-  $or:[
-   {sender:u1,receiver:u2},
-   {sender:u2,receiver:u1}
-  ]
- }
- ]
-}).sort({ createdAt: 1 });
 
-    res.json({ success: true, messages });
+      $and: [
+
+        {
+          $or: [
+            { sender: u1, receiver: u2 },
+            { sender: u2, receiver: u1 }
+          ]
+        },
+
+        {
+          isArchived: false
+        }
+
+      ]
+
+    }).sort({ createdAt: 1 });
+
+
+    res.json({
+      success: true,
+      messages
+    });
+
+
   } catch (err) {
-    res.status(500).json({ success: false });
+
+    res.status(500).json({
+      success:false,
+      message:err.message
+    });
+
   }
+});
+// ARCHIVE PRODUCT CHAT
+
+router.put("/archive/:user1/:user2/:productId", async(req,res)=>{
+
+try{
+
+const {
+user1,
+user2,
+productId
+}=req.params;
+
+
+await Chat.updateMany(
+
+{
+productId:productId,
+
+$or:[
+{
+sender:user1,
+receiver:user2
+},
+{
+sender:user2,
+receiver:user1
+}
+]
+},
+
+{
+isArchived:true
+}
+
+);
+
+
+res.json({
+success:true,
+message:"Chat archived"
+});
+
+
+}
+catch(err){
+
+res.status(500).json({
+success:false,
+message:err.message
+});
+
+}
+
 });
 
 module.exports = router;
