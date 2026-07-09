@@ -6,7 +6,7 @@ const ChatSchema = new mongoose.Schema({
 
   productId: String,
   productName: String,
-  productImage: String,
+  image: String,
 
   message: String,
 

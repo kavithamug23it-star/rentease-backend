@@ -23,17 +23,23 @@ router.get("/users/:email", async (req, res) => {
 
       if (b.userEmail !== email) {
 
-        users.push({
-          email: b.userEmail
-        });
+       users.push({
+    email: b.userEmail,
+    productName: b.productName,
+    image: b.image,
+    status: b.status
+});
 
       }
 
       if (b.ownerEmail !== email) {
 
-        users.push({
-          email: b.ownerEmail
-        });
+     users.push({
+    email: b.ownerEmail,
+    productName: b.productName,
+    image: b.image,
+    status: b.status
+});
 
       }
 
@@ -78,11 +84,10 @@ const chat = await Chat.create({
 
   productId,
   productName,
-  productImage,
+  image,
 
   message
 });
-
     res.json({ success: true, chat });
   } catch (err) {
     res.status(500).json({ message: err.message });
