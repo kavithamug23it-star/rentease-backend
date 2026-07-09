@@ -210,10 +210,11 @@ await product.save();
 
 console.log("After Update:", product);
 
-    res.json({
-      success: true,
-      updated
-    });
+   res.json({
+  success: true,
+  message: "Property status updated successfully",
+  property: product
+});
 
   } catch (err) {
     console.log(err);
