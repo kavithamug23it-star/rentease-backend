@@ -86,7 +86,7 @@ const chat = await Chat.create({
 
   productId,
   productName,
-  image,
+  image: productImage,
 
   message
 });
