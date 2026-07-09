@@ -69,6 +69,8 @@ router.get("/users/:email", async (req, res) => {
 // SEND MESSAGE
 router.post("/send", async (req, res) => {
   try {
+console.log("CHAT REQUEST:", req.body);
+
     const {
   sender,
   receiver,
@@ -90,8 +92,13 @@ const chat = await Chat.create({
 });
     res.json({ success: true, chat });
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  console.log("CHAT ERROR:", err);
+
+  res.status(500).json({
+    success: false,
+    message: err.message
+  });
+}
 });
 
 // GET CHAT
