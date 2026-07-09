@@ -101,17 +101,53 @@ const chat = await Chat.create({
 }
 });
 
+// DELETE CHAT
+
+router.delete("/:id", async(req,res)=>{
+
+try{
+
+const chat = await Chat.findByIdAndUpdate(
+ req.params.id,
+ {
+   isDeleted:true
+ }
+);
+
+res.json({
+ success:true,
+ message:"Chat deleted"
+});
+
+
+}catch(err){
+
+res.status(500).json({
+ success:false,
+ message:err.message
+});
+
+}
+
+});
 // GET CHAT
 router.get("/:u1/:u2", async (req, res) => {
   try {
     const { u1, u2 } = req.params;
 
     const messages = await Chat.find({
-      $or: [
-        { sender: u1, receiver: u2 },
-        { sender: u2, receiver: u1 }
-      ]
-    }).sort({ createdAt: 1 });
+ $and:[
+ {
+  $or:[
+   {sender:u1,receiver:u2},
+   {sender:u2,receiver:u1}
+  ]
+ },
+ {
+  isDeleted:false
+ }
+ ]
+}).sort({ createdAt: 1 });
 
     res.json({ success: true, messages });
   } catch (err) {
