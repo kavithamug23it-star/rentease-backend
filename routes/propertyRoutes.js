@@ -62,6 +62,8 @@ router.get("/all", async (req, res) => {
       })
     );
 
+    console.log(updatedProperties);
+
     res.json({
       success: true,
       properties: updatedProperties
@@ -205,7 +207,7 @@ if (!product) {
   });
 }
 
-product.status = "rented";
+product.status = status;
 await product.save();
 
 console.log("After Update:", product);

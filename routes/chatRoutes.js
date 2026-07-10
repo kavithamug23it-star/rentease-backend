@@ -163,10 +163,6 @@ router.get("/:u1/:u2", async (req, res) => {
             { sender: u1, receiver: u2 },
             { sender: u2, receiver: u1 }
           ]
-        },
-
-        {
-          isArchived: false
         }
 
       ]
@@ -189,59 +185,6 @@ router.get("/:u1/:u2", async (req, res) => {
 
   }
 });
-// ARCHIVE PRODUCT CHAT
 
-router.put("/archive/:user1/:user2/:productId", async(req,res)=>{
-
-try{
-
-const {
-user1,
-user2,
-productId
-}=req.params;
-
-
-await Chat.updateMany(
-
-{
-productId:productId,
-
-$or:[
-{
-sender:user1,
-receiver:user2
-},
-{
-sender:user2,
-receiver:user1
-}
-]
-},
-
-{
-isArchived:true
-}
-
-);
-
-
-res.json({
-success:true,
-message:"Chat archived"
-});
-
-
-}
-catch(err){
-
-res.status(500).json({
-success:false,
-message:err.message
-});
-
-}
-
-});
 
 module.exports = router;
