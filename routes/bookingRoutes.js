@@ -58,9 +58,15 @@ router.get("/my/:email", async (req, res) => {
       bookings.map(async (booking) => {
 
 
-        const product = await Property.findById(
-          booking.productId
-        );
+        let product = null;
+
+if(booking.productId){
+
+    product = await Property.findById(
+        booking.productId
+    );
+
+}
 
 
         return {
