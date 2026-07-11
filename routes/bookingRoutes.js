@@ -47,7 +47,8 @@ router.post("/add", async (req, res) => {
 router.get("/my/:email", async (req, res) => {
 
   try {
-
+     console.log("MY BOOKING ROUTE HIT");
+console.log("EMAIL:", req.params.email);
     const bookings = await Booking.find({
       userEmail: req.params.email
     });
@@ -97,14 +98,14 @@ if(booking.productId){
 
   } catch(error){
 
-    console.log(error);
+    console.log("BOOKING ERROR:", error.message);
 
     res.status(500).json({
       success:false,
-      message:"Server Error"
+      message:error.message
     });
 
-  }
+}
 
 });
 router.put("/feedback/:id", async (req, res) => {
