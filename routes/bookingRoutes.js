@@ -1,6 +1,7 @@
 const express = require("express");
 const Booking = require("../models/Booking");
 const Property = require("../models/Property");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -59,9 +60,13 @@ console.log("EMAIL:", req.params.email);
       bookings.map(async (booking) => {
 
 
-        let product = null;
+      let product = null;
 
-if(booking.productId){
+
+if(
+    booking.productId &&
+    mongoose.Types.ObjectId.isValid(booking.productId)
+){
 
     product = await Property.findById(
         booking.productId
