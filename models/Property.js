@@ -31,7 +31,18 @@ const PropertySchema = new mongoose.Schema({
     type: String,
     enum: ["available", "rented", "blocked"],
     default: "available"
-  }
+  },
+  ownerLocation:{
+    lat:{
+        type:Number
+    },
+    lng:{
+        type:Number
+    },
+    place:{
+        type:String
+    }
+}
 
 }, {
   timestamps: true

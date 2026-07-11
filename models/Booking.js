@@ -56,6 +56,17 @@ userName: {
     type: String,
     default: "On The Way"
   },
+  renterLocation:{
+    place:{
+        type:String
+    },
+    lat:{
+        type:Number
+    },
+    lng:{
+        type:Number
+    }
+},
 feedback: {
   type: String,
   default: ""

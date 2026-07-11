@@ -52,16 +52,50 @@ router.get("/my/:email", async (req, res) => {
       userEmail: req.params.email
     });
 
+
+    const updatedBookings = await Promise.all(
+
+      bookings.map(async (booking) => {
+
+
+        const product = await Property.findById(
+          booking.productId
+        );
+
+
+        return {
+
+          ...booking.toObject(),
+
+
+          ownerLocation: product 
+            ? product.ownerLocation 
+            : null,
+
+
+          renterLocation: booking.renterLocation || null
+
+        };
+
+
+      })
+
+    );
+
+
     res.json({
-      success: true,
-      bookings
+      success:true,
+      bookings:updatedBookings
     });
 
-  } catch (error) {
+
+  } catch(error){
+
+    console.log(error);
 
     res.status(500).json({
-      success: false,
-      message: "Server Error"
+      success:false,
+      message:"Server Error"
     });
 
   }

@@ -9,16 +9,28 @@ router.post("/add", async (req, res) => {
 
   try {
 
-    const { name, image, location, price, ownerEmail } = req.body;
+    const { 
+ name, 
+ image, 
+ location, 
+ price, 
+ ownerEmail,
+ ownerLocation
+} = req.body;
 
     const property = new Property({
+
       name,
       image,
       location,
       price,
       ownerEmail,
-      status: "available"
-    });
+
+      ownerLocation,
+
+      status:"available"
+
+});
 
     await property.save();
 
